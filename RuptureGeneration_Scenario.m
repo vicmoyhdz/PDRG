@@ -1,31 +1,33 @@
-% By Victor Hernández (vmh5@hi.is). July 2025
+% By Victor M. Hernández-Aguirre (victor@hi.is). July 2025
+% A kinematic rupture generator for ground-motion simulations: 
+% Validation and scenarios in South Iceland
 
 clc
 clear
 close all
 rng('shuffle')
 
-addpath '.\SongModified'
 addpath '.\LibraryFunctions'
 
 %% Input and preprocessing
 
 % General options
-rup.Filename='TestM7';
+rup.Filename='Test';
 % A folder named Filename is created to save the model (rup.m) and plots
 folder_name=[cd,'\',rup.Filename];
 if ~isfolder(folder_name)
     mkdir (['./',rup.Filename]);
 end
-rup.target_Mw = 7; seed=100*rand; %seed=rand;
-rup.sampling=[300 300]; %in m
+rup.target_Mw = 7; 
+seed=100*rand; 
+rup.sampling=[300 300]; %subfault size in m
 Mo = 10^(1.5*rup.target_Mw + 9.05);
 % Width and length of the fault. A scaling law or fixed dimensions could be used
 % WL=[1000*10^(-2.18+0.17*log10(Mo))  1000*10^(-6.31+0.4*log10(Mo))]; 
 % WL=[1000*10^(-0.829+0.323*rup.target_Mw)  1000*10^(-1.722+0.485*rup.target_Mw)]; 
 % WL=floor(WL./rup.sampling).* rup.sampling;
-WL=[18000 45000]; 
-rup.L = WL(2);  rup.W = WL(1); %in km
+WL=[18000 45000]; %(in m)
+rup.L = WL(2);  rup.W = WL(1); 
 rup.stk  = 11; rup.dip  = 29; rup.rake  = 270; 
 rup.mech='ds'; %ds - dip-slip %ss - strike-slip
 rup.rake_cov=10; %to add a slight variation to rake, std in degrees (0 no variation)
@@ -47,7 +49,7 @@ cor_len=[rup.az, rup.ax, rup.Hurst]; %correlation lengths in m and Hurst exponen
 rup.acf_type='ak'; %Von Karman
 rup.mu=3e10; %average shear modulus in Pa (to scale slip to magnitude)
 rho=2650; Vs=sqrt(rup.mu /rho); Vp=1.8*Vs; lambda_ave=rho*(Vp^2-2*Vs^2);
-taper_width=[1000,0,1000];     % Taper width for slip in m  [left/right, top bottom]
+taper_width=[1000,0,1000];     % Taper width for slip in m  [left/right, top, bottom]
 taper_function = 'hn';
 %--------------------------------------------------------------------------------
 %Options for kinematic rupture generation
@@ -66,11 +68,12 @@ rup.user_stats.alpha=1.4;rup.user_stats.beta=-0.95;rup.user_stats.gamma=0.04;rup
 %min/max values [slip(m) Vr/Vs(km/s) Vmax(m/s) risT(s) peak_time(s)];
 rup.p1.min = [0   0.3  0.05  0.05 0.07];
 rup.p1.max = [7  0.95   6      6   0.20];
+%Liu et al. (2006): pliu; Tinti et al. (2005): etinti; Exponential: exp
 rup.svf.type = 'pliu';
 rup.dx1 =400; % grid size for sub-calculation (Chol, Eig)
 rup.seed.seed = seed; rup.seed.stats = seed;
-%Parameters for peak time distribution when using Liu (mean, std and
-%correlation coefficient with Vmax)
+%Parameters for peak time distribution when using Liu: mean, std and
+%correlation coefficient (rho_PT) with Vmax
 rup.user_stats.mean_PT=0.11; rup.user_stats.sigma_PT=0.03; rup.user_stats.rho_PT=-0.4;
 
 %--------------------------------------------------------------------------------
@@ -97,16 +100,8 @@ central_perce_target=0.7;
 rup.slip_deterministic=slip;
 rup.slip_nontaper=slip_nontaper;
 
-%----------------------------------------------------------------------------------------------
-%Option 2. Add short wavelength noise to a given slip distribution (from inversion)
-% 
-%[slip_nontaper, slip,slipp,radial_spectra,Deterministic_resampled] = CreateSlipModified(Deterministic,wavelength_cut,...
-%max_slip,WL, rup.target_Mw, rup.mu_vec, rup.sampling, cor_len, rup.acf_type, taper_width, taper_function,seed);
-%rup.slip_deterministic=slip;
-%rup.slip_nontaper=slip_nontaper;
-
 %----------------------------------------------------------------
-%Compute seismic moments and disturbed rakes at each subfault
+%Compute seismic moments and disturbed rakes at each subfault (correlated with slip)
 rup.Mo_vec = rup.mu_vec.*rup.slip_deterministic(:).*(rup.sampling(2)*rup.sampling(1));
 [rake_srcmod, corr_coeff] = generate_correlated_field(rup.slip_deterministic,0.1, rup.rake_cov,rup.rake);  
   rup.rake_vec=rake_srcmod(:);
@@ -123,24 +118,18 @@ rup.Mo_vec = rup.mu_vec.*rup.slip_deterministic(:).*(rup.sampling(2)*rup.samplin
 % rup.shyp = 10000;      % along strike location (from top center) of hypocenter
 % rup.dhyp = 8000;        % along dip location (from top edge) of hypocenter
 %-------------------------------------------------------------
- %Hypo coordinates
+ %Hypo coordinates in global coordinates
  HypLoc = [rup.shyp -rup.dhyp*cosd(rup.dip) -rup.dhyp*sind(rup.dip)];    
  [HypGlo(1),HypGlo(2)] = find_rotated_coords(HypLoc(1),HypLoc(2),-(rup.stk-90));
- HypGlo(1) = HypGlo(1) + rup.ref(1);
- HypGlo(2) = HypGlo(2) + rup.ref(2);
- HypGlo(3) = HypLoc(3) + rup.ref(3);
+ HypGlo(1) = HypGlo(1) + rup.ref(1); HypGlo(2) = HypGlo(2) + rup.ref(2); HypGlo(3) = HypLoc(3) + rup.ref(3);
  rup.hypo_coor = HypGlo;
 
-%% Pseudynamic rupture generation (Vmax, Vrup)
-
-rup = gen_src_2(rup); %preprocessing
-% Reads and samples 1-point and 2-point statistics of source parameters (Song, 2016)
-rup = gen_stats_2(rup); 
+%% PVmax and Vrup from Covariance model
+ 
 %Generates multivariate correlated Gaussian fields using Cholesky factorization 
 % method, conditioned on given slip. Then modifies them according to 
 % 1-point statistics (mean and sigma). Afterwards computes Trup and Tau
-rup = gen_rup_2(rup); 
-
+rup = gen_rup(rup); 
 
 %% Calculation of roughness from integrated stress field
 
@@ -160,16 +149,16 @@ rup.normal_vectors = rotate_vector_fault2global(norm_vectors,  rup.stk, rup.dip)
 rup.slip_vectors = slip_vec_from_normal(rup.normal_vectors,rup.rake_vec);
 rup.roughness=Roughness(:);
 
-%Update coordinates considering the roughness
+%Update coordinates considering roughness
 rup.glo_coor(:,1)= rup.glo_coor(:,1)+rup.roughness.* rup.normal_vectors(:,1);
 rup.glo_coor(:,2)= rup.glo_coor(:,2)+rup.roughness.* rup.normal_vectors(:,2);
 rup.glo_coor(:,3)= rup.glo_coor(:,3)+rup.roughness.* rup.normal_vectors(:,3);
 
-%% Export MATE file and save
+%% Export source MATE file in SPEED format 
+% rup=export_MATE(rup);
 
-rup=export_MATE(rup);
+%% Save 
 save([folder_name,'\','rup.mat'], 'rup')
 
 %% Plotting
-
 Plotting_source_parameters

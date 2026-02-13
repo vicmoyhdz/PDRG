@@ -1,6 +1,6 @@
 function ISD = integrate_vector_field(Sx, Sy, sampling)
 
-% By Victor Hernández (vmh5@hi.is). July 2025
+% By Victor Hernández (victorh@hi.is). July 2025
 % This function solves the Poisson equation, i.e., it gives the scalar field (ISD) whose
 % gradient best matches the Stress Drop vector field S=(Sx, Sy), where Sx and Sy
 % are the stress drops along the fault's strike and dip directions

@@ -1,6 +1,6 @@
 function [Roughness_subfault,normal_vectors] = fault_roughness_frac(ISD,alpha,strike_length,dip_length,dx_subfault, dy_subfault)
 
-% By Victor Hernández (vmh5@hi.is). July 2025
+% By Victor Hernández (victorh@hi.is). July 2025
 % Generates fault roughness: phase is extracted from ISD field whilst the spectral amplitude
 % is extracted from a fractal PSD using the spectral sythesis method (Ogorodnikov). This
 % approach was proposed by Aquib et al. (2025).

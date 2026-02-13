@@ -2,8 +2,8 @@
 
 function [Y,radial_spectra,DD] = SpecSyn2D_Hybrid(Deterministic, wavelength_cut,N, samp, corr, acf, Rseed)
 
-% By Victor Hernández (vmh5@hi.is). July 2025. 
-% Inspired by Martin Mai's code SpecSyn2D
+% By Victor Hernández (victorh@hi.is). July 2025. 
+% Based on code by Martin Mai's code SpecSyn2D
 
 % Generates a 2D-random field Y of size (Nz+1 x Nx+1) with possibly variable spatial 
 % sampling in z,x-direction. At wavenumbers < wavelength_cut the Deterministic slip is used.

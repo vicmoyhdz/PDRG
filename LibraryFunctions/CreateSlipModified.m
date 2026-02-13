@@ -1,6 +1,6 @@
 function [slip, slip_taper,slipp,radial_spectra,Deterministic_resampled] = CreateSlipModified(Deterministic, wavelength_cut, slip_max,dim, Mw, mu, samp, cor_len, acf_type, taper_width, taper_function,seed)
 
-% By Victor Hernández (vmh5@hi.is). July 2025
+% By Victor Hernández (victorh@hi.is). July 2025
 % This function merges a given slip distribution (Deterministic) with an stochastic 
 % distribution created using the spectral synthesis method (SpecSyn2D_Hybrid).
 % For merging uses the filter by Graves and Pitarka (2010). Then, it

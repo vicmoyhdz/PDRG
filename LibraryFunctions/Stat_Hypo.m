@@ -20,7 +20,7 @@ function [slip_pos,hypo_x,hypo_z,sampled_hypo_x,sampled_hypo_z] = Stat_Hypo(rup)
 % *****
 %
 % Author: Walter Imperatori, June 2008. 
-% Modified by Victor Hernández (vmh5@hi.is). July 2025
+% Modified by Victor Hernández (victorh@hi.is). July 2025
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 slip=rup.slip_deterministic;
@@ -94,8 +94,9 @@ hyp_slip=hyp_slip/max(max(hyp_slip));
 
 % -------------------------------------------------------
 % computes probability based on both on-plane position and slip ratios
-slip_pos=hyp_slip.*hyp_pos;  
-slip_pos=slip_pos/max(max(slip_pos));   % scales it to 1 
+% slip_pos=hyp_slip.*hyp_pos;  
+% slip_pos=slip_pos/max(max(slip_pos));   % scales it to 1 
+slip_pos=hyp_pos;
 
 % -------------------------------------------------------
 % define asperities regions (definitions from Mai et al. 2005)

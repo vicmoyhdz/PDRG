@@ -1,7 +1,5 @@
 function [sigmaS,sigmaD] = Slip2Stress(slip,rake,samp,rig,lam,sfac)
 %
-%   [sigmaS,sigmaD,EsS,EsD] = Slip2Stress9(slipS,slipD,samp,rig,lam,sfac);
-%
 %   This function calculates the static stress drop for a given
 %   slip distribution using Andrews (1980) concept of a static
 %   stiffness function that involves a 2D-Fourier Transform of
@@ -139,29 +137,7 @@ sigmaS = sigmaS./1e6;
 sigmaD = sigmaD./1e6;
 sigmaS=sigmaS(11:end-10,11:end-10);
 sigmaD=sigmaD(11:end-10,11:end-10);
-% sigmaS(1,:)=sigmaS(2,:);
-% sigmaS(end,:)=sigmaS(end-1,:);
-% sigmaS(:,1)=sigmaS(:,2);
-% sigmaS(:,end)=sigmaS(:,end-1);
-% sigmaD(1,:)=sigmaD(2,:);
-% sigmaD(end,:)=sigmaD(end-1,:);
-% sigmaD(:,1)=sigmaD(:,2);
-% sigmaD(:,end)=sigmaD(:,end-1);
 
-% %%% Compute static self-energy, using method by Andrews (1980):
-% %%% 'Fault impedance and earthquake energy in the fourier
-% %%%  transform domain', BSSA, Vol 70, No.5, pp.1683-1698
-% %%% Wavenumber sampling intervals:
-% dk = [fx(2)-fx(1); fz(2)-fz(1)]; % [1/m]
-% %%% Equation (52):
-% E52S = 0.5*sum(sum(KS.*(AMS.^2)))*dk(1)*dk(2); % in [J]
-% E52D = 0.5*sum(sum(KD.*(AMD.^2)))*dk(1)*dk(2); % in [J]
-% %%% Correction factor (FFT ?)
-% E52S=E52S*2*pi;
-% E52D=E52D*2*pi;
-% %%% We want it in J/m^2 for comparison between different events:
-% EsS = E52S/(dim(1)*dim(2)*1e6); % in [J/m^2]
-% EsD = E52D/(dim(1)*dim(2)*1e6); % in [J/m^2]
 
 
 

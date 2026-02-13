@@ -1,6 +1,6 @@
 function [Y] = SpecSyn2D(N, samp, corr, acf, Rseed)
 
-% Slight modification from Martin Mai's code by Victor Hernández (vmh5@hi.is). July 2025
+% Slight modification from Martin Mai's code by Victor Hernández (victorh@hi.is). July 2025
 
 % Generates a 2D-random field Y of size (Nz+1 x Nx+1) with possibly variable spatial 
 % sampling in z,x-direction. This function simulates anisotropic random fields, i.e.   

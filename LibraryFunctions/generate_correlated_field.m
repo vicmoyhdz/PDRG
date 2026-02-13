@@ -1,6 +1,6 @@
 function [xi2, corr_coeff] = generate_correlated_field(S, eta,std_target,mean_target)
 
-% By Victor Hernández (vmh5@hi.is). July 2025
+% By Victor Hernández (victor@hi.is). July 2025
 % Generate_correlated_field - Generates a random field xi2 with:
 %   - approximately the same PSD as the given field S
 %   - correlation coefficient ≈ eta with S

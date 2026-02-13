@@ -1,7 +1,7 @@
 function [slip, slip_taper,slipp] = CreateSlip(dim, Mw, mu, samp, cor_len, acf_type,...
  taper_width, taper_function,central_perce_target,seed)
 
-% By Victor Hernández (vmh5@hi.is). July 2025
+% By Victor Hernández (victorh@hi.is). July 2025
 % This function creates an stochastic slip distribution using the spectral synthesis 
 % method (SpecSyn2D), then modifies slip values to follow a truncated exponential 
 % distribution, and later scales the field to the required seismic moment.

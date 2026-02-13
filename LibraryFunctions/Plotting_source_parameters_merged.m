@@ -48,18 +48,18 @@ saveas(gcf,[cd,'\',rup.Filename,'\',save_fig_name],'png');
 
 %% Plot PDF for hypocenter
 
-fig=figure('Units', 'inches', 'Position', [1, 1, 7, 4.1]);
-imagesc(rup.x_loc_matrix(:)./1000, rup.z_loc_matrix(:)./1000,slip_pos);
-axis normal;
-cc=colorbar;
-ylabel(cc,'Hypocenter PDF','FontSize',12);
-xlabel('L [km]'); ylabel('W [km]');
-set(gca,'fontSize',12)
-hold on; plot(rup.shyp/1000,rup.dhyp/1000,'marker','pentagram','color','w','MarkerSize',8,'LineWidth',2)
+% fig=figure('Units', 'inches', 'Position', [1, 1, 7, 4.1]);
+% imagesc(rup.x_loc_matrix(:)./1000, rup.z_loc_matrix(:)./1000,slip_pos);
+% axis normal;
+% cc=colorbar;
+% ylabel(cc,'Hypocenter PDF','FontSize',12);
+% xlabel('L [km]'); ylabel('W [km]');
+% set(gca,'fontSize',12)
+% hold on; plot(rup.shyp/1000,rup.dhyp/1000,'marker','pentagram','color','w','MarkerSize',8,'LineWidth',2)
+% 
+% save_fig_name = sprintf('%s%s%s.png','Hypo_',rup.Filename);
+% saveas(gcf,[cd,'\',rup.Filename,'\',save_fig_name],'png');
 
-save_fig_name = sprintf('%s%s%s.png','Hypo_',rup.Filename);
-saveas(gcf,[cd,'\',rup.Filename,'\',save_fig_name],'png');
-% exportgraphics(fig, [cd,'\',rup.Filename,'\',save_fig_name,'.pdf'], 'ContentType', 'vector');
 
 %% Plot kinematic rupture parameters
 

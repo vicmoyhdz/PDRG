@@ -1,7 +1,7 @@
 function [rho] = covariance_coregionalization(rup,r)
 
 % By Victor Hernández (victorh@hi.is). July 2025
-% Function implementing the Linear Model of covariance_coregionalization
+% Function implementing the Covariance LMC model
 % by Savran and Olsen (2020)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
