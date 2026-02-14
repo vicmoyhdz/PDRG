@@ -6,7 +6,8 @@ This repository includes a kinematic rupture generation framework useful for ens
 
 Slip distribution is simulated first, and then distributions of Vmax and Vr are simulated conditioned on slip, using a multivariate covariance model.
 
-Function RuptureGeneration_Scenario.m applies the rupture generator step by step. All input parameters are defined in the first section: Input and preprocessing. All input parameters and the rupture model are saved in the file rup.mat
-Function RuptureGeneration_Modify.m has prescribes slip distribution as a combination of a deterministic part at large wavelengths and a stochastic part at short wavelengths.
+Function RuptureGeneration_Scenario.m applies the rupture generator step by step. All input parameters are defined in the first section: Input and preprocessing. All input parameters and the rupture model are saved in the file rup.mat.
+
+Function RuptureGeneration_Modify.m prescribes slip distribution as a combination of a deterministic part at large wavelengths and a stochastic part at short wavelengths.
 
 Supporting functions are provided in subfolder LibraryFunctions. Some functions are based on the work of Seok G. Song, and Martin Mai and collaborators.
